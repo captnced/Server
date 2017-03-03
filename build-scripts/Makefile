@@ -63,5 +63,5 @@ install:
 	@$(call ok_msg,"To install in boot sequence > update-rc.d xccg defaults")
 
 pull:
-	@git pull
+	@cd ../ && git pull
 	@$(call ok_msg,"git pull")
