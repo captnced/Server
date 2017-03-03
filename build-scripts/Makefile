@@ -55,6 +55,7 @@ clean:
 
 install:
 	@test -d /etc/init.d/ && cp ../build/xCCGServer/xccg /etc/init.d/ || $(call failed_msg,"Could not install xccg script in /etc/init.d/")
+	@chmod 755 /etc/init.d/xccg
 	@test -d $(INSTALL_FOLDER)/server/ && $(call ok_msg,"[$(INSTALL_FOLDER)/server/] already exists") || mkdir -p $(INSTALL_FOLDER)/server/
 	@cd ../build; \
 	cp -Rf $(SERVER_FOLDER)/* $(INSTALL_FOLDER)/server/ || $(call failed_msg,"Could not install xccg server in $(INSTALL_FOLDER)/server/")
@@ -64,3 +65,12 @@ install:
 pull:
 	@cd ../ && git pull
 	@$(call ok_msg,"git pull")
+
+init:
+	@sudo apt-get update
+	@sudo apt-get install gcc
+	@sudo apt-get install make
+	@sudo apt-get install cmake
+	@sudo apt-get install build-essential
+	@sudo apt-get install libxrandr-dev libjpeg-dev libsndfile1-dev libudev-dev libglu1-mesa-dev
+
