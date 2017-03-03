@@ -118,8 +118,9 @@ void do_run(
 	std::wstring wcmd;
 	while(true)
 	{
-		if (!std::getline(std::wcin, wcmd))		// TODO: It's blocking...
-			wcmd = L"EXIT";						// EOF, handle as EXIT
+        // can't use this when starting casparcg from etc/init.d shell
+		/*if (!std::getline(std::wcin, wcmd))		// TODO: It's blocking...
+			wcmd = L"EXIT";						// EOF, handle as EXIT*/
 
 		if(boost::iequals(wcmd, L"EXIT") || boost::iequals(wcmd, L"Q") || boost::iequals(wcmd, L"QUIT") || boost::iequals(wcmd, L"BYE"))
 		{
