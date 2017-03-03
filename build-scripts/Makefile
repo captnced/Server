@@ -59,6 +59,6 @@ install:
 	@cd ../build; \
 	cp -Rf $(SERVER_FOLDER)/* $(INSTALL_FOLDER)/server/ || $(call failed_msg,"Could not install xccg server in $(INSTALL_FOLDER)/server/")
 
-	$(call ok_msg,"To start xccg manually > /etc/init.d/xccg start")
-	$(call ok_msg,"To install in boot sequence > update-rc.d xccg defaults")
+	@$(call ok_msg,"To start xccg manually > /etc/init.d/xccg start")
+	@$(call ok_msg,"To install in boot sequence > update-rc.d xccg defaults")
 
