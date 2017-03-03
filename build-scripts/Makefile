@@ -62,3 +62,6 @@ install:
 	@$(call ok_msg,"To start xccg manually > /etc/init.d/xccg start")
 	@$(call ok_msg,"To install in boot sequence > update-rc.d xccg defaults")
 
+pull:
+	@git pull
+	@$(call ok_msg,"git pull")
