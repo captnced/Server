@@ -53,5 +53,5 @@ clean:
 
 install:
 	@test -d /etc/init.d/ && cp ..//build/xCCGServer/xccg /etc/init.d/ || $(call failed_msg,"Could not install xccg script in /etc/init.d/")
-	@update-rc.d xccg defaults || $(call failed_msg,"Could not install /etc/init.d/xccg in boot sequence")
+	$(call failed_msg,"To install in boot sequence > update-rc.d xccg defaults")
 
