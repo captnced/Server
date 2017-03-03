@@ -431,7 +431,11 @@ boost::rational<int> read_framerate(AVFormatContext& context, const boost::ratio
 			if (diff1 < diff2)
 				closest_fps = boost::rational<int>(format.time_scale, format.duration);
 		}
-
+        // dirty hack when FPS was not detected, to avoid returning 0/0 value -> forcing fps = 25/1
+        if(closest_fps.numerator()==0||closest_fps.denominator()==0) {
+            std::wcout << L"warning ! fps 0/0 " << closest_fps << L" --> forcing FPS = 25.0" << std::endl;
+            return boost::rational<int>(25000000, 1000000);
+        }
 		return closest_fps;
 	}
 
