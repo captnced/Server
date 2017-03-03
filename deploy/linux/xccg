@@ -139,7 +139,7 @@ start() {
         if [[ 0 -eq $? ]]; then ok_msg "xccg started"; return 0; fi
     done
     load_process_info
-    if [[ 1 -eq $? ]]; then ok_msg "xccg start failed"; return 0; fi
+    if [[ 1 -eq $? ]]; then failed_msg "xccg start failed"; return 0; fi
 
     # check whether started.
 #    for ((i = 0; i < 5; i++)); do
