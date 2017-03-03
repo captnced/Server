@@ -40,7 +40,6 @@ all:
     # Copy binary dependencies
 	@cd ../build; \
 	cp -Rf ../deploy/linux/* $(SERVER_FOLDER)/; \
-	cp -f  ../deploy/general/*.pdf $(SERVER_FOLDER)/; \
 	cp -Rf ../deploy/general/wallpapers $(SERVER_FOLDER)/; \
 	cp -Rf ../deploy/general/server/media $(SERVER_FOLDER)/; \
 	cp -Rf ../deploy/general/server/template $(SERVER_FOLDER)/; \
