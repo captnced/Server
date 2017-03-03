@@ -16,7 +16,7 @@
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 ROOT="/usr/local/xccg/server"
 XCONFTEMPLATE="/usr/local/xccg/xorg_conf_10-nvidia.template"
-APP="./casparcg.exe"
+APP="./run.sh"
 DEFAULT_PID_FILE='./xccg.pid'
 
 ########################################################################
@@ -53,7 +53,6 @@ load_process_info() {
 
     return 0;
 }
-
 
 checkXconfig() {
     HAS_GPU=`lspci | grep -i NVIDIA`

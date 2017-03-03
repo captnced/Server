@@ -54,13 +54,12 @@ clean:
 	@rm -Rf ../build && $(call ok_msg,"cleaned ../build folder")
 
 install:
-	@test -d /etc/init.d/ && cp ..//build/xCCGServer/xccg /etc/init.d/ || $(call failed_msg,"Could not install xccg script in /etc/init.d/")
+	@test -d /etc/init.d/ && cp ../build/xCCGServer/xccg /etc/init.d/ || $(call failed_msg,"Could not install xccg script in /etc/init.d/")
 	@test -d $(INSTALL_FOLDER)/server/ && $(call ok_msg,"[$(INSTALL_FOLDER)/server/] already exists") || mkdir -p $(INSTALL_FOLDER)/server/
 	@cd ../build; \
 	cp -Rf $(SERVER_FOLDER)/* $(INSTALL_FOLDER)/server/ || $(call failed_msg,"Could not install xccg server in $(INSTALL_FOLDER)/server/")
-
-	@$(call ok_msg,"To start xccg manually > /etc/init.d/xccg start")
-	@$(call ok_msg,"To install in boot sequence > update-rc.d xccg defaults")
+	@$(call ok_msg,"To start xccg manually :: /etc/init.d/xccg start")
+	@$(call ok_msg,"To install in boot sequence :: update-rc.d xccg defaults")
 
 pull:
 	@cd ../ && git pull
