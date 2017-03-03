@@ -406,6 +406,7 @@ CFLAGS="-I$TARGET_DIR/include -I$TARGET_DIR/usr/local/include" LDFLAGS="-L$TARGE
 	--disable-ffplay \
 	--disable-ffserver \
 	--disable-stripping \
+        --enable-nonfree \
 	--enable-shared \
 	--enable-avisynth \
 	--enable-bzlib \
