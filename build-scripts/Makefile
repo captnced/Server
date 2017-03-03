@@ -24,7 +24,7 @@ all:
 	@test -d ../build && $(call ok_msg,"[build] folder already exists")|| mkdir ../build
 	@$(call ok_msg,"now building from [build] folder...")
 	@cd ../build; \
-	cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RelWithDebInfo .. || $(call failed_msg,"cmake failed")
+	@test -f Makefile && $(call ok_msg,"Makefile already ready") || cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RelWithDebInfo .. || $(call failed_msg,"cmake failed")
 	@cd ../build; \
 	/usr/bin/time -f 'Build time %E' make -j$(BUILD_PARALLEL_THREADS) || $(call failed_msg,"make failed")
 	@cd ../build; \
