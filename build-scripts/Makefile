@@ -49,6 +49,7 @@ all:
 
 deps:
 	@cd ../dependencies64 && tar xvJf large_files_linux.tar.xz && $(call ok_msg,"deployed ..//dependencies64/cef/bin/linux/libcef.so") || $(call failed_msg,"could not unpack large_files_linux.tar.xz")
+	@cd ../dependencies64 && wget https://launchpad.net/ubuntu/+archive/primary/+files/libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && sudo dpkg -i ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb
 
 clean:
 	@rm -Rf ../build && $(call ok_msg,"cleaned ../build folder")
@@ -56,6 +57,7 @@ clean:
 install:
 	@test -d /etc/init.d/ && cp ../build/xCCGServer/xccg /etc/init.d/ || $(call failed_msg,"Could not install xccg script in /etc/init.d/")
 	@chmod 755 /etc/init.d/xccg
+	@sudo mkdir /usr/local/xccg
 	@sudo cp ../deploy/linux/xorg_conf_10-nvidia.template /usr/local/xccg/xorg_conf_10-nvidia.template
 	@test -d $(INSTALL_FOLDER)/server/ && $(call ok_msg,"[$(INSTALL_FOLDER)/server/] already exists") || mkdir -p $(INSTALL_FOLDER)/server/
 	@cd ../build; \
@@ -74,4 +76,5 @@ init:
 	@sudo apt-get install cmake
 	@sudo apt-get install build-essential
 	@sudo apt-get install libxrandr-dev libjpeg-dev libsndfile1-dev libudev-dev libglu1-mesa-dev
+	@sudo apt-get install libjpeg-dev libpng-dev libxrandr-dev libxcb-xfixes0-dev libv4l-dev libgtk2.0-0 libxtst6 libnss3 libgconf-2-4 libasound2 libcgmanager0 libraw1394-dev libavc1394-dev libiec61883-dev libxss1
 
