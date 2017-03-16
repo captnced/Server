@@ -57,7 +57,7 @@ clean:
 install:
 	@test -d /etc/init.d/ && cp ../build/xCCGServer/xccg /etc/init.d/ || $(call failed_msg,"Could not install xccg script in /etc/init.d/")
 	@chmod 755 /etc/init.d/xccg
-	@sudo mkdir /usr/local/xccg
+	@test -d /etc/init.d/ && $(call ok_msg,"[/usr/local/xccg] already exists") || mkdir /usr/local/xccg
 	@sudo cp ../deploy/linux/xorg_conf_10-nvidia.template /usr/local/xccg/xorg_conf_10-nvidia.template
 	@test -d $(INSTALL_FOLDER)/server/ && $(call ok_msg,"[$(INSTALL_FOLDER)/server/] already exists") || mkdir -p $(INSTALL_FOLDER)/server/
 	@cd ../build; \
