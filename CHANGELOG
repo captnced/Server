@@ -28,7 +28,7 @@ General
     (Krzysztof Pyrkosz).
   o Build script for building FFmpeg for Linux now part of the repository.
     Contributions during development (not w.r.t 2.1.0 Beta 1):
-    + Fix ffmpeg build dependencies on clean ubuntu desktop amd64 14.04.3 or
+    + Fix ffmpeg build dependencies on clean Ubuntu desktop amd64 14.04.3 or
       higher (Walter Sonius).
   o Added support for video modes 2160p5000, 2160p5994 and 2160p6000
     (Antonio Ruano Cuesta).
@@ -42,7 +42,11 @@ Consumers
       qtrle was never affected but all the YCbCr based codecs were.
     + Fixed bug in parsing of paths containing -.
   o DeckLink consumer:
-    + Fixed possible dead-lock in frame queue.
+    + Rewrote the frame hand-off between send() and ScheduledFrameCompleted() in
+      a way that hopefully resolves all dead-lock scenarios previously possible.
+  o Bluefish consumer:
+    + Largely rewritten against newest SDK, giving support for newer hardware
+      and features (Satchit Nambiar and James Wise sponsored by Bluefish444).
 
 Producers
 ---------
@@ -54,17 +58,45 @@ Producers
       decode the first frame.
     + Added support for IN and OUT parameters (Dimitry Ishenko).
     + Added DV/HDV video device support under Linux (Walter Sonius).
+    + Remove unused flags variable in queued_seek (Dimitry Ishenko).
+  o Destroy producer proxy:
+    + Created workaround for bug in FFmpeg where every new thread used to
+      cleanup caused handles to leak (not sure why). Reduced the effect by using
+      only one thread for all producer destructions.
   o Framerate producer:
     + Fixed bug when INFO was used on a not yet playing framerate producer.
   o HTML producer:
     + Fixed bug where only URL:s with . in them where recognized.
   o Image producer:
     + Added LENGTH parameter to allow for queueing with LOADBG AUTO.
+    + Fixed inconsistency in what file extensions are supported vs listed in
+      CLS/CINF.
   o Layer producer:
     + Fixed serious bug where a circular reference of layer producers caused a
       stack overflow and server crash.
   o Scene producer:
-    + Added abs() function to expression language.
+    + Added abs(), floor(), to_lower(), to_upper() and length() functions to the
+      expression language.
+    + Created XML Schema for the *.scene XML format. Allows for IDE-like auto-
+      completion, API documentation and validation.
+    + Added possibility to specify the width and height of a layer instead of
+      letting the producer on the layer decide.
+    + Added global variables scene_width, scene_height and fps.
+    + Made it possible to use expressions in keyframe values.
+    + Fixed serious bug where uninitialized values were used.
+    + Created more example scenes.
+    + Can now forward CALL, CG PLAY, CG STOP, CG NEXT and CG INVOKE to the
+      producer on a layer.
+  o CG proxy wrapper producer:
+    + New in 2.1.0.
+    + Allows all CG producers to be used as an ordinary producer inside a layer
+      in a scene.
+    + Allows the Scene producer to know what variables are available in a
+      template.
+  o Color producer:
+    + Now has support for gradients.
+  o PSD producer:
+    + Added support for centered and right justified text.
 
 Mixer
 -----
@@ -73,7 +105,8 @@ Mixer
     coefficients was used.
   o Rewrote the chroma key code to support variable hue, instead of fixed green
     or blue. Threshold setting was removed in favour of separate hue width,
-    minimum saturation and minimum brightness constraints.
+    minimum saturation and minimum brightness constraints. Also a much more
+    effective spill suppression method was implemented.
   o Fixed bug where glReadPixels() was done from the last drawn to texture
     instead of always from the target texture. This means that for example a
     MIXER KEYER layer without a layer above to key, as well as a separate alpha
