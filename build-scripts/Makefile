@@ -48,8 +48,9 @@ all:
 	cp -Rf ../deploy/general/server/font $(SERVER_FOLDER)/ || $(call failed_msg,"Could not dependencies")
 
 deps:
+	#http://opensource.spotify.com/cefbuilds/cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2
 	@cd ../dependencies64 && tar xvJf large_files_linux.tar.xz && $(call ok_msg,"deployed ..//dependencies64/cef/bin/linux/libcef.so") || $(call failed_msg,"could not unpack large_files_linux.tar.xz")
-	@cd ../dependencies64 && wget https://launchpad.net/ubuntu/+archive/primary/+files/libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && sudo dpkg -i ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb
+	@cd ../dependencies64 && rm -f ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && wget https://launchpad.net/ubuntu/+archive/primary/+files/libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && sudo dpkg -i ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb
 
 clean:
 	@rm -Rf ../build && $(call ok_msg,"cleaned ../build folder")
