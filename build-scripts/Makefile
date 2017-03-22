@@ -4,6 +4,8 @@ SERVER_FOLDER=${BUILD_ARCHIVE_NAME}
 
 INSTALL_FOLDER=/usr/local/xccg
 
+CEF3=cef_binary_3.2987.1592.gfbafd4e_linux64
+
 RED="\\033[31m"
 GREEN="\\033[32m"
 YELLOW="\\033[33m"
@@ -49,8 +51,10 @@ all:
 
 cef3:
 	@test -d ../dependencies64/cef3 && $(call ok_msg,"[cef3] folder already exists")|| mkdir ../dependencies64/cef3
-	@test -f ../dependencies64/cef3/cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2 && $(call ok_msg,"cef3 targz file already downloaded")|| $(cd ../dependencies64/cef3 && wget http://opensource.spotify.com/cefbuilds/cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2)
-	@cd ../dependencies64/cef3/ && tar -xvf cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2
+	@test -f ../dependencies64/cef3/$(CEF3).tar.bz2 && $(call ok_msg,"cef3 targz file already downloaded")|| $(cd ../dependencies64/cef3 && wget http://opensource.spotify.com/cefbuilds/$(CEF3).tar.bz2)
+	@cd ../dependencies64/cef3/ && tar -xvf $(CEF3).tar.bz2
+
+
 
 
 deps:
