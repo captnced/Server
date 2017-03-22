@@ -239,7 +239,7 @@ public:
 				CefRefPtr<CefV8Value> ret;
 				CefRefPtr<CefV8Exception> exception;
 				//context->Eval("tickAnimations()", ret, exception);
-                context->Eval("tickAnimations()",nullptr,0, ret, exception);
+                context->Eval("tickAnimations()","",0, ret, exception);
                 /*
                  virtual bool Eval(const CefString& code,
                  CefRefPtr<CefV8Value>& retval,
