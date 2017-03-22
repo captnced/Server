@@ -130,7 +130,7 @@ public:
 
 		CefRefPtr<CefV8Value> ret;
 		CefRefPtr<CefV8Exception> exception;
-		bool injected = context->Eval(R"(
+		/*bool injected = context->Eval(R"(
 			var requestedAnimationFrames	= {};
 			var currentAnimationFrameId		= 0;
 
@@ -152,7 +152,7 @@ public:
 					if (requestedFrames.hasOwnProperty(animationFrameId))
 						requestedFrames[animationFrameId](timestamp);
 			}
-		)", ret, exception);
+		)", ret, exception);*/
         
         // update CEF >   ///
         // Execute a string of JavaScript code in this V8 context. The |script_url|
@@ -169,7 +169,7 @@ public:
                           CefRefPtr<CefV8Value>& retval,
                           CefRefPtr<CefV8Exception>& exception) =0;*/
         
-        /*bool injected = context->Eval(R"(
+        bool injected = context->Eval(R"(
 			var requestedAnimationFrames	= {};
 			var currentAnimationFrameId		= 0;
 
@@ -191,7 +191,7 @@ public:
 					if (requestedFrames.hasOwnProperty(animationFrameId))
 						requestedFrames[animationFrameId](timestamp);
 			}
-		)","", 0, ret, exception);*/
+		)","", 0, ret, exception);
         
         
         
@@ -238,8 +238,8 @@ public:
 			{
 				CefRefPtr<CefV8Value> ret;
 				CefRefPtr<CefV8Exception> exception;
-				context->Eval("tickAnimations()", ret, exception);
-                //context->Eval("tickAnimations()","",0, ret, exception);
+				//context->Eval("tickAnimations()", ret, exception);
+                context->Eval("tickAnimations()","",0, ret, exception);
                 /*
                  virtual bool Eval(const CefString& code,
                  CefRefPtr<CefV8Value>& retval,
