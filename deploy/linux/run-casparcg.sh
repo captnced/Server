@@ -9,7 +9,7 @@ export DISPLAY=:0
 
 while [ $RET -eq 5 ]
 do
-  LD_LIBRARY_PATH=lib bin/casparcg "$@"
+  LD_LIBRARY_PATH=lib nice -20 bin/casparcg "$@"
   RET=$?
 done
 
