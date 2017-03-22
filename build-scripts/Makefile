@@ -54,8 +54,12 @@ cef3:
 	@test -d ../dependencies64/cef3 && $(call ok_msg,"[cef3] folder already exists") || mkdir ../dependencies64/cef3
 	@test -f ../dependencies64/cef3/$(CEF3).tar.bz2 && $(call ok_msg,"cef3 targz file already downloaded") || `cd ../dependencies64/cef3 && wget http://opensource.spotify.com/cefbuilds/$(CEF3).tar.bz2`
 	@cd ../dependencies64/cef3/ && tar -xvf $(CEF3).tar.bz2 && $(call ok_msg,"cef3 downloaded ok")
-	@test -d ../dependencies64/cef3/$(CEF3)/build && rm -Rf ../dependencies64/cef3/$(CEF3)/build/
-	@cd ../dependencies64/cef3/$(CEF3) && mkdir build && cd build && cmake .. && make -j6 libcef_dll_wrapper && $(call ok_msg,"cef3 libcef_dll_wrapper compiled ok")
+	@test -d ../dependencies64/cef3/$(CEF3)/build && rm -Rf ../dependencies64/cef3/$(CEF3)/build/ || $(call ok_msg,"cef3 ready to build")
+	@cd ../dependencies64/cef3/$(CEF3) && mkdir build
+	@cd ../dependencies64/cef3/$(CEF3)/build && cmake .. && make -j6 libcef_dll_wrapper && $(call ok_msg,"cef3 libcef_dll_wrapper compiled ok")
+	@test -d ../dependencies64/cef/lib/linux/ || mkdir -p ../dependencies64/cef/lib/linux/
+	@test -d ../dependencies64/cef/bin/linux/ || mkdir -p ../dependencies64/cef/bin/linux/
+	@test -d ../dependencies64/cef/include/ || mkdir -p ../dependencies64/cef/include/
 	cp ../dependencies64/cef3/$(CEF3)/Release/* ../dependencies64/cef/bin/linux/
 	cp -R ../dependencies64/cef3/$(CEF3)/Resources/locales/* ../dependencies64/cef/bin/linux/locales/
 	cp -R ../dependencies64/cef3/$(CEF3)/Resources/*.pak ../dependencies64/cef/bin/linux/
