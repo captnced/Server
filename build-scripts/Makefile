@@ -69,7 +69,7 @@ cef3:
 	cp ../dependencies64/cef3/$(CEF3)/Release/libcef.so ../dependencies64/cef/lib/linux/
 	cp ../dependencies64/cef3/$(CEF3)/Release/libcef.so ../dependencies64/cef/bin/linux/
 	cp -R ../dependencies64/cef3/$(CEF3)/build/libcef_dll_wrapper/* ../dependencies64/cef/lib/linux/libcef_dll_wrapper/
-
+	mv ../dependencies64/cef/lib/linux/libcef_dll_wrapper/libcef_dll_wrapper.a ../dependencies64/cef/lib/linux/
 
 deps: cef3
 	#http://opensource.spotify.com/cefbuilds/cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2
