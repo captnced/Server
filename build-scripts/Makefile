@@ -47,6 +47,12 @@ all:
 	cp -Rf ../deploy/general/server/template $(SERVER_FOLDER)/; \
 	cp -Rf ../deploy/general/server/font $(SERVER_FOLDER)/ || $(call failed_msg,"Could not dependencies")
 
+cef3:
+	@test -d ../dependencies64/cef3 && $(call ok_msg,"[cef3] folder already exists")|| mkdir ../dependencies64/cef3
+	@test -f ../dependencies64/cef3/cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2 && $(call ok_msg,"cef3 targz file already downloaded")|| $(cd ../dependencies64/cef3 && wget http://opensource.spotify.com/cefbuilds/cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2)
+	@cd ../dependencies64/cef3/ && tar -xvf cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2
+
+
 deps:
 	#http://opensource.spotify.com/cefbuilds/cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2
 	@cd ../dependencies64 && tar xvJf large_files_linux.tar.xz && $(call ok_msg,"deployed ..//dependencies64/cef/bin/linux/libcef.so") || $(call failed_msg,"could not unpack large_files_linux.tar.xz")
