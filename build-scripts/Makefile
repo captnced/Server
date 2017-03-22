@@ -4,7 +4,9 @@ SERVER_FOLDER=${BUILD_ARCHIVE_NAME}
 
 INSTALL_FOLDER=/usr/local/xccg
 
-CEF3=cef_binary_3.2987.1592.gfbafd4e_linux64
+#CEF3=cef_binary_3.2987.1592.gfbafd4e_linux64 #03/17/2017
+CEF3=cef_binary_3.2785.1485.g2b5c3a7_linux64
+#10/12/2016
 
 RED="\\033[31m"
 GREEN="\\033[32m"
