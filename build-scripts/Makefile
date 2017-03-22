@@ -60,11 +60,14 @@ cef3:
 	@test -d ../dependencies64/cef/lib/linux/ || mkdir -p ../dependencies64/cef/lib/linux/
 	@test -d ../dependencies64/cef/bin/linux/ || mkdir -p ../dependencies64/cef/bin/linux/
 	@test -d ../dependencies64/cef/include/ || mkdir -p ../dependencies64/cef/include/
+	@test -d ../dependencies64/cef/bin/linux/locales/ || mkdir -p ../dependencies64/cef/bin/linux/locales/
+	@test -d ../dependencies64/cef/lib/linux/libcef_dll_wrapper/ || mkdir -p ../dependencies64/cef/lib/linux/libcef_dll_wrapper/
 	cp ../dependencies64/cef3/$(CEF3)/Release/* ../dependencies64/cef/bin/linux/
 	cp -R ../dependencies64/cef3/$(CEF3)/Resources/locales/* ../dependencies64/cef/bin/linux/locales/
 	cp -R ../dependencies64/cef3/$(CEF3)/Resources/*.pak ../dependencies64/cef/bin/linux/
 	cp -R ../dependencies64/cef3/$(CEF3)/include/* ../dependencies64/cef/include/
 	cp ../dependencies64/cef3/$(CEF3)/Release/libcef.so ../dependencies64/cef/lib/linux/
+	cp ../dependencies64/cef3/$(CEF3)/Release/libcef.so ../dependencies64/cef/bin/linux/
 	cp -R ../dependencies64/cef3/$(CEF3)/build/libcef_dll_wrapper/* ../dependencies64/cef/lib/linux/libcef_dll_wrapper/
 
 
