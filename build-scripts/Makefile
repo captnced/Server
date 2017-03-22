@@ -39,8 +39,9 @@ all:
 	cp -f  shell/*.ttf $(SERVER_FOLDER)/; \
 	cp -f  shell/casparcg $(SERVER_FOLDER)/bin/; \
 	cp -f  shell/casparcg.config $(SERVER_FOLDER)/; \
-	cp -Rf shell/locales $(SERVER_FOLDER)/bin/; \
-	cp -f  shell/*.pak $(SERVER_FOLDER)/ || $(call failed_msg,"Could not copy compiled binary resources")
+    #cp -Rf shell/locales $(SERVER_FOLDER)/bin/; \
+    #cp -f  shell/*.pak $(SERVER_FOLDER)/ || $(call failed_msg,"Could not copy compiled binary resources")
+	cp -R ../dependencies64/cef3/$(CEF3)/Resources/* $(SERVER_FOLDER)/bin/
     # Copy binary dependencies
 	@cd ../build; \
 	cp -Rf ../deploy/linux/* $(SERVER_FOLDER)/; \
@@ -53,8 +54,13 @@ cef3:
 	@test -d ../dependencies64/cef3 && $(call ok_msg,"[cef3] folder already exists") || mkdir ../dependencies64/cef3
 	@test -f ../dependencies64/cef3/$(CEF3).tar.bz2 && $(call ok_msg,"cef3 targz file already downloaded") || `cd ../dependencies64/cef3 && wget http://opensource.spotify.com/cefbuilds/$(CEF3).tar.bz2`
 	@cd ../dependencies64/cef3/ && tar -xvf $(CEF3).tar.bz2
-	@cd ../dependencies64/cef3/$(CEF3)
-
+	@cd ../dependencies64/cef3/$(CEF3) && mkdir build && cd build && cmake .. && make libcef_dll_wrapper
+	cp ../dependencies64/cef3/$(CEF3)/Release/* ../dependencies64/cef/bin/linux/
+	cp -R ../dependencies64/cef3/$(CEF3)/Resources/locales/* ../dependencies64/cef/bin/linux/locales/
+	cp -R ../dependencies64/cef3/$(CEF3)/Resources/*.pak ../dependencies64/cef/bin/linux/
+	cp -R ../dependencies64/cef3/$(CEF3)/include/* ../dependencies64/cef/include/
+	cp ../dependencies64/cef3/$(CEF3)/Release/libcef.so ../dependencies64/cef/lib/linux/
+	cp -R ../dependencies64/cef3/$(CEF3)/build/libcef_dll_wrapper/* ../dependencies64/cef/lib/linux/libcef_dll_wrapper/
 
 
 deps:
