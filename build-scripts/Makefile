@@ -43,8 +43,6 @@ all:
 	cp -f  shell/casparcg $(SERVER_FOLDER)/bin/; \
 	cp -f  shell/casparcg.config $(SERVER_FOLDER)/; \
 	cp -R ../dependencies64/cef3/$(CEF3)/Resources/* $(SERVER_FOLDER)/bin/
-	#cp -Rf shell/locales $(SERVER_FOLDER)/bin/; \
-	#cp -f  shell/*.pak $(SERVER_FOLDER)/ || $(call failed_msg,"Could not copy compiled binary resources")
 	# Copy binary dependencies
 	@cd ../build; \
 	cp -Rf ../deploy/linux/* $(SERVER_FOLDER)/; \
@@ -81,6 +79,7 @@ deps: cef3
 
 clean:
 	@rm -Rf ../build && $(call ok_msg,"cleaned ../build folder")
+	@rm -Rf ../dependencies64/cef3/* && $(call ok_msg,"cleaned cef3 dependency folder")
 
 install:
 	@test -d /etc/init.d/ && cp ../build/xCCGServer/xccg /etc/init.d/ || $(call failed_msg,"Could not install xccg script in /etc/init.d/")
