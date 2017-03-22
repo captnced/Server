@@ -130,7 +130,7 @@ public:
 
 		CefRefPtr<CefV8Value> ret;
 		CefRefPtr<CefV8Exception> exception;
-		bool injected = context->Eval(R"(
+		/*bool injected = context->Eval(R"(
 			var requestedAnimationFrames	= {};
 			var currentAnimationFrameId		= 0;
 
@@ -152,8 +152,49 @@ public:
 					if (requestedFrames.hasOwnProperty(animationFrameId))
 						requestedFrames[animationFrameId](timestamp);
 			}
-		)", ret, exception);
+		)", ret, exception);*/
+        
+        // update CEF >   ///
+        // Execute a string of JavaScript code in this V8 context. The |script_url|
+        // parameter is the URL where the script in question can be found, if any.
+        // The |start_line| parameter is the base line number to use for error
+        // reporting. On success |retval| will be set to the return value, if any, and
+        // the function will return true. On failure |exception| will be set to the
+        // exception, if any, and the function will return false.
+        ///
+        /*--cef(optional_param=script_url)--*/
+        /*virtual bool Eval(const CefString& code,
+                          const CefString& script_url,
+                          int start_line,
+                          CefRefPtr<CefV8Value>& retval,
+                          CefRefPtr<CefV8Exception>& exception) =0;*/
+        
+        bool injected = context->Eval(R"(
+			var requestedAnimationFrames	= {};
+			var currentAnimationFrameId		= 0;
 
+			window.requestAnimationFrame = function(callback) {
+				requestedAnimationFrames[++currentAnimationFrameId] = callback;
+				return currentAnimationFrameId;
+			}
+
+			window.cancelAnimationFrame = function(animationFrameId) {
+				delete requestedAnimationFrames[animationFrameId];
+			}
+
+			function tickAnimations() {
+				var requestedFrames = requestedAnimationFrames;
+				var timestamp = performance.now();
+				requestedAnimationFrames = {};
+
+				for (var animationFrameId in requestedFrames)
+					if (requestedFrames.hasOwnProperty(animationFrameId))
+						requestedFrames[animationFrameId](timestamp);
+			}
+		)","", 0, ret, exception);
+        
+        
+        
 		if (!injected)
 			caspar_log(browser, boost::log::trivial::error, "Could not inject javascript animation code.");
 	}
