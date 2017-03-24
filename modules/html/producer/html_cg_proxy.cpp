@@ -60,25 +60,25 @@ void html_cg_proxy::add(
 
 void html_cg_proxy::remove(int layer)
 {
-    CASPAR_LOG(warning) << "[cef_task] REMOVE";
+    CASPAR_LOG(trace) << "[cef_task] REMOVE";
 	impl_->producer->call({ L"remove()" });
 }
 
 void html_cg_proxy::play(int layer)
 {
-    CASPAR_LOG(warning) << "[cef_task] PLAY";
+    CASPAR_LOG(trace) << "[cef_task] PLAY";
 	impl_->producer->call({ L"play()" });
 }
 
 void html_cg_proxy::stop(int layer, unsigned int mix_out_duration)
 {
-    CASPAR_LOG(warning) << "[cef_task] STOP";
+    CASPAR_LOG(trace) << "[cef_task] STOP";
 	impl_->producer->call({ L"stop()" });
 }
 
 void html_cg_proxy::next(int layer)
 {
-    CASPAR_LOG(warning) << "[cef_task] NEXT";
+    CASPAR_LOG(trace) << "[cef_task] NEXT";
 	impl_->producer->call({ L"next()" });
 }
 
