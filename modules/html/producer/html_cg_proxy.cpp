@@ -99,7 +99,7 @@ std::wstring html_cg_proxy::description(int layer)
 
 std::wstring html_cg_proxy::template_host_info()
 {
-	return L"hey_cedric_was_here";
+	return L"";
 }
 
 }}

@@ -566,6 +566,7 @@ public:
 	{
 		boost::property_tree::wptree info;
 		info.add(L"type", L"html-producer");
+        info.add(L"name", url_);
 		return info;
 	}
 
