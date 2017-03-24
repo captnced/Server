@@ -230,7 +230,7 @@ private:
 	void OnAfterCreated(CefRefPtr<CefBrowser> browser) override
 	{
 		CASPAR_ASSERT(CefCurrentlyOn(TID_UI));
-
+        CASPAR_LOG(warning) << "[cef_task] OnAfterCreated";
 		browser_ = browser;
 	}
 
@@ -463,6 +463,8 @@ public:
 			CefBrowserSettings browser_settings;
 			browser_settings.web_security = cef_state_t::STATE_DISABLED;
 			CefBrowserHost::CreateBrowser(window_info, client_.get(), url, browser_settings, nullptr);
+            
+            CASPAR_LOG(warning) << "[cef_task] create html_producer";
 		});
 	}
 
@@ -612,6 +614,8 @@ spl::shared_ptr<core::frame_producer> create_producer(
 		? L"file://" + *found_filename
 		: params.at(1);
 
+    CASPAR_LOG(warning) << "[cef_task] create html_producer :: " << url;
+    
 	if (!html_prefix && (!boost::algorithm::contains(url, ".") || boost::algorithm::ends_with(url, "_A") || boost::algorithm::ends_with(url, "_ALPHA")))
 		return core::frame_producer::empty();
 
