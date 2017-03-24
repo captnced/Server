@@ -215,6 +215,7 @@ public:
 	{
 		boost::property_tree::wptree info;
 		info.add(L"type", L"layer-producer");
+        info.add(L"layer",L"" + boost::lexical_cast<std::wstring>(layer_) + L"");
 		return info;
 	}
 
