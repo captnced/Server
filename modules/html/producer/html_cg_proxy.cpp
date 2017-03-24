@@ -94,12 +94,12 @@ std::wstring html_cg_proxy::invoke(int layer, const std::wstring& label)
 
 std::wstring html_cg_proxy::description(int layer)
 {
-	return L"";
+	return L"TEST_CEDRIC_1";
 }
 
 std::wstring html_cg_proxy::template_host_info()
 {
-	return L"";
+	return L"TEST_CEDRIC_2";
 }
 
 }}
