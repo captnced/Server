@@ -462,13 +462,16 @@ public:
             CefBrowserSettings browser_settings;
 			browser_settings.web_security = cef_state_t::STATE_DISABLED;
 			CefBrowserHost::CreateBrowser(window_info, client_.get(), url, browser_settings, nullptr);
+            CASPAR_LOG(trace) << "[cef_task] created browser";
 		});
 	}
 
 	~html_producer()
 	{
-		if (client_)
+        if (client_) {
+            CASPAR_LOG(trace) << "[cef_task] destroy html_producer";
 			client_->close();
+        }
 	}
 
 	// frame_producer
@@ -532,11 +535,15 @@ public:
 	{
 		if (client_)
 		{
+            CASPAR_LOG(trace) << "[cef_task] draw frame";
 			if (client_->is_removed())
 			{
 				client_ = nullptr;
+                CASPAR_LOG(trace) << "[cef_task] draw frame empty";
 				return core::draw_frame::empty();
-			}
+            } else {
+                CASPAR_LOG(trace) << "[cef_task] draw frame no client";
+            }
 
 			return client_->receive();
 		}
@@ -546,11 +553,12 @@ public:
 
 	std::future<std::wstring> call(const std::vector<std::wstring>& params) override
 	{
-		if (!client_)
+        if (!client_) {
+            CASPAR_LOG(trace) << "[cef_task] call params";
 			return make_ready_future(std::wstring(L""));
-
+        }
 		auto javascript = params.at(0);
-
+        CASPAR_LOG(trace) << "[cef_task] call javascript " << javascript;
 		client_->execute_javascript(javascript);
 
 		return make_ready_future(std::wstring(L""));
