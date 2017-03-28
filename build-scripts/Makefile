@@ -104,4 +104,5 @@ init:
 	@sudo apt-get install build-essential
 	@sudo apt-get install libxrandr-dev libjpeg-dev libsndfile1-dev libudev-dev libglu1-mesa-dev
 	@sudo apt-get install libjpeg-dev libpng-dev libxrandr-dev libxcb-xfixes0-dev libv4l-dev libgtk2.0-0 libxtst6 libnss3 libgconf-2-4 libasound2 libcgmanager0 libraw1394-dev libavc1394-dev libiec61883-dev libxss1
+	@sudo apt-get install gnome-themes-standard
 
