@@ -460,8 +460,8 @@ public:
             window_info.SetAsWindowless(kNullWindowHandle, true);
             
             CefBrowserSettings browser_settings;
-            browser_settings.windowless_rendering_enabled = true;
-            browser_settings.transparent_painting_enabled = true;
+            //browser_settings.windowless_rendering_enabled = true;
+            //browser_settings.transparent_painting_enabled = true;
 			browser_settings.web_security = cef_state_t::STATE_DISABLED;
             browser_settings.plugins = cef_state_t::STATE_DISABLED;;
             browser_settings.javascript_access_clipboard = cef_state_t::STATE_DISABLED;;
