@@ -240,19 +240,6 @@ public:
 				CefRefPtr<CefV8Exception> exception;
 				//context->Eval("tickAnimations()", ret, exception);
                 context->Eval("tickAnimations()","",0, ret, exception);
-                /*
-                 virtual bool Eval(const CefString& code,
-                 CefRefPtr<CefV8Value>& retval,
-                 CefRefPtr<CefV8Exception>& exception) =0;
-                 
-                 
-                 virtual bool Eval(const CefString& code,
-                 const CefString& script_url,
-                 int start_line,
-                 CefRefPtr<CefV8Value>& retval,
-                 CefRefPtr<CefV8Exception>& exception) =0;
-                 */
-                
                 
 			}
 

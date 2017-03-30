@@ -457,7 +457,7 @@ public:
 
 			/*window_info.SetTransparentPainting(true);
 			window_info.SetAsOffScreen(nullptr);*/
-            //window_info.SetAsWindowless(kNullWindowHandle, true);
+            window_info.SetAsWindowless(kNullWindowHandle, true);
             
             CefBrowserSettings browser_settings;
 			browser_settings.web_security = cef_state_t::STATE_DISABLED;
