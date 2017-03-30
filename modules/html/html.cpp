@@ -279,20 +279,23 @@ void init(core::module_dependencies dependencies)
 		CefSettings settings;
 		settings.no_sandbox = true;
         settings.log_severity = LOGSEVERITY_VERBOSE;
-        //settings.multi_threaded_message_loop = true;
-        settings.pack_loading_disabled = false;
-        settings.ignore_certificate_errors = true;
+        settings.windowless_rendering_enabled = true;
+        settings.remote_debugging_port = env::properties().get(L"configuration.html.remote-debugging-port", 0);
+
+        //settings.pack_loading_disabled = false;
+        //settings.ignore_certificate_errors = true;
+
         //settings.graphics_implementation = ANGLE_IN_PROCESS;// DESKTOP_IN_PROCESS, ANGLE_IN_PROCESS (deprecated ?)
         
-        settings.single_process = true;
-        settings.multi_threaded_message_loop = false;
+        //settings.single_process = false;
+        //settings.multi_threaded_message_loop = false;
         
-        settings.windowless_rendering_enabled = true;
+        
         //settings.transparent_painting_enabled = true; (deprecated ?)
         
         //settings.background_color = CefColorSetARGB(255, 255, 0, 0);
         
-		settings.remote_debugging_port = env::properties().get(L"configuration.html.remote-debugging-port", 0);
+		
 		//CASPAR_LOG(trace) << "[cef_task] CefInitialize ";
         CefInitialize(main_args, settings, nullptr, nullptr);
 	});
