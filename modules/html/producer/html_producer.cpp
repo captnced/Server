@@ -278,35 +278,31 @@ private:
         CASPAR_LOG(trace) << "[cef_task] OnBrowserCreated";
     }
     
-    void OnUncaughtException(CefRefPtr<MyClientApp> app,
-                                     CefRefPtr<CefBrowser> browser,
-                                     CefRefPtr<CefFrame> frame,
-                                     CefRefPtr<CefV8Context> context,
-                                     CefRefPtr<CefV8Exception> exception,
-                                     CefRefPtr<CefV8StackTrace> stackTrace)
+    void OnUncaughtException(CefRefPtr<CefBrowser> browser,
+                             CefRefPtr<CefFrame> frame,
+                             CefRefPtr<CefV8Context> context,
+                             CefRefPtr<CefV8Exception> exception,
+                             CefRefPtr<CefV8StackTrace> stackTrace)
     {
         CASPAR_LOG(warning) << "[cef_task] caught v8 exception";
     }
     
-    void OnWebKitInitialized(CefRefPtr<MyClientApp> app)
+    void OnWebKitInitialized()
     {
         CASPAR_LOG(trace) << "[cef_task] OnWebKitInitialized";
     }
 
-    void OnRenderThreadCreated(CefRefPtr<MyClientApp> app,
-                               CefRefPtr<CefListValue> extra_info)
+    void OnRenderThreadCreated(CefRefPtr<CefListValue> extra_info)
     {
         CASPAR_LOG(trace) << "[cef_task] OnRenderThreadCreated";
     }
     
-    void OnRenderProcessThreadCreated(
-                                      CefRefPtr<MyClientApp> app,
-                                      CefRefPtr<CefListValue> extra_info)
+    void OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
     {
         CASPAR_LOG(trace) << "[cef_task] OnRenderProcessThreadCreated";
     }
     
-    void OnContextInitialized(CefRefPtr<ClientApp> app)
+    void OnContextInitialized()
     {
         CASPAR_LOG(trace) << "[cef_task] OnContextInitialized";
     }
