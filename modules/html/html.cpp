@@ -282,7 +282,7 @@ void init(core::module_dependencies dependencies)
         //settings.multi_threaded_message_loop = true;
         //settings.pack_loading_disabled = false;
         settings.ignore_certificate_errors = true;
-        settings.graphics_implementation = // DESKTOP_IN_PROCESS, ANGLE_IN_PROCESS
+        settings.graphics_implementation = ANGLE_IN_PROCESS;// DESKTOP_IN_PROCESS, ANGLE_IN_PROCESS
         settings.windowless_rendering_enabled = true;
         settings.background_color = CefColorSetARGB(255, 255, 0, 0);
         
