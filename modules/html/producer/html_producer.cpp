@@ -272,8 +272,7 @@ private:
 		execute_queued_javascript();
 	}
 
-    void OnBrowserCreated(CefRefPtr<MyClientApp> app,
-                          CefRefPtr<CefBrowser> browser)
+    void OnBrowserCreated(CefRefPtr<CefBrowser> browser)
     {
         CASPAR_LOG(trace) << "[cef_task] OnBrowserCreated";
     }
