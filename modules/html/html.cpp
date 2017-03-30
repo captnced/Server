@@ -293,7 +293,7 @@ void init(core::module_dependencies dependencies)
         //settings.background_color = CefColorSetARGB(255, 255, 0, 0);
         
 		settings.remote_debugging_port = env::properties().get(L"configuration.html.remote-debugging-port", 0);
-		
+		CASPAR_LOG(trace) << "[cef_task] CefInitialize ";
         CefInitialize(main_args, settings, nullptr, nullptr);
 	});
 	g_cef_executor->begin_invoke([&]
