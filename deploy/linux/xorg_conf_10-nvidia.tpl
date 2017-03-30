@@ -1,14 +1,29 @@
 Section "ServerLayout"
-    Identifier    "Layout0"
-    Screen      0 "Screen0"
-    InputDevice   "Generic Keyboard"
+    Identifier     "Layout0"
+    Screen      0  "Screen0"
+    InputDevice    "Keyboard0" "CoreKeyboard"
+    InputDevice    "Mouse0" "CorePointer"
+EndSection
+
+Section "Files"
 EndSection
 
 Section "InputDevice"
-    Identifier    "Generic Keyboard"
-    Driver        "void"
-    Option        "CoreKeyboard"
+    # generated from default
+    Identifier     "Mouse0"
+    Driver         "mouse"
+    Option         "Protocol" "auto"
+    Option         "Device" "/dev/psaux"
+    Option         "Emulate3Buttons" "no"
+    Option         "ZAxisMapping" "4 5"
 EndSection
+
+Section "InputDevice"
+    # generated from default
+    Identifier     "Keyboard0"
+    Driver         "kbd"
+EndSection
+
 
 Section "Module"
     Load           "dbe"
