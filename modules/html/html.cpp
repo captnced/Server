@@ -278,9 +278,14 @@ void init(core::module_dependencies dependencies)
 	{
 		CefSettings settings;
 		settings.no_sandbox = true;
+        settings.multi_threaded_message_loop = true;
+        settings.pack_loading_disabled = false;
+        settings.ignore_certificate_errors = true;
+        settings.windowless_rendering_enabled = true;
+        
 		settings.remote_debugging_port = env::properties().get(L"configuration.html.remote-debugging-port", 0);
-		//settings.windowless_rendering_enabled = true;
-		CefInitialize(main_args, settings, nullptr, nullptr);
+		
+        CefInitialize(main_args, settings, nullptr, nullptr);
 	});
 	g_cef_executor->begin_invoke([&]
 	{

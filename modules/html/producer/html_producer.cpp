@@ -503,11 +503,7 @@ public:
             //browser_settings.transparent_painting_enabled = true;
 			browser_settings.web_security = cef_state_t::STATE_DISABLED;
             browser_settings.plugins = cef_state_t::STATE_DISABLED;
-            browser_settings.multi_threaded_message_loop = true;
-            browser_settings.pack_loading_disabled = false;
-            browser_settings.ignore_certificate_errors = true;
-            browser_settings.no_sandbox = true;
-            
+                        
             browser_settings.javascript_access_clipboard = cef_state_t::STATE_DISABLED;;
             
 			bool startedCef = CefBrowserHost::CreateBrowser(window_info, client_.get(), url, browser_settings, nullptr);
