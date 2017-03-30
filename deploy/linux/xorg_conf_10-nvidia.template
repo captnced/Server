@@ -1,6 +1,13 @@
 Section "ServerLayout"
-    Identifier     "Layout0"
-    Screen      0  "Screen0"
+    Identifier    "Layout0"
+    Screen      0 "Screen0"
+    InputDevice   "Generic Keyboard"
+EndSection
+
+Section "InputDevice"
+    Identifier    "Generic Keyboard"
+    Driver        "void"
+    Option        "CoreKeyboard"
 EndSection
 
 Section "Module"
