@@ -44,7 +44,7 @@ all:
 	cp -f  shell/casparcg $(SERVER_FOLDER)/bin/; \
 	cp -f  shell/casparcg.config $(SERVER_FOLDER)/; \
 	cp -R ../dependencies64/cef3/$(CEF3)/Resources/* $(SERVER_FOLDER)/bin/
-	cp ../dependencies64/cef3/$(CEF3)/Release/*.bin
+	cp ../dependencies64/cef3/$(CEF3)/Release/*.bin $(SERVER_FOLDER)/bin/
 	# Copy binary dependencies
 	@cd ../build; \
 	cp -Rf ../deploy/linux/* $(SERVER_FOLDER)/; \
