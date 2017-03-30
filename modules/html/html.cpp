@@ -43,6 +43,8 @@
 
 #include <map>
 
+#include <X11/Xlib.h>
+
 #pragma warning(push)
 #pragma warning(disable: 4458)
 #include <cef_app.h>
@@ -52,8 +54,25 @@
 #pragma comment(lib, "libcef.lib")
 #pragma comment(lib, "libcef_dll_wrapper.lib")
 
+
+
+
 namespace caspar { namespace html {
 
+int XErrorHandlerImpl(Display *display, XErrorEvent *event) {
+    CASPAR_LOG_CALL(trace) << "X error received: "
+    << "type " << event->type << ", "
+    << "serial " << event->serial << ", "
+    << "error_code " << static_cast<int>(event->error_code) << ", "
+    << "request_code " << static_cast<int>(event->request_code) << ", "
+    << "minor_code " << static_cast<int>(event->minor_code);
+    return 0;
+}
+
+int XIOErrorHandlerImpl(Display *display) {
+    return 0;
+}
+    
 std::unique_ptr<executor> g_cef_executor;
 
 void caspar_log(
@@ -276,12 +295,15 @@ void init(core::module_dependencies dependencies)
 	g_cef_executor.reset(new executor(L"cef"));
 	g_cef_executor->invoke([&]
 	{
+        XSetErrorHandler(XErrorHandlerImpl);
+        XSetIOErrorHandler(XIOErrorHandlerImpl);
+        
 		CefSettings settings;
 		settings.no_sandbox = true;
-        settings.log_severity = LOGSEVERITY_VERBOSE;
         settings.windowless_rendering_enabled = true;
         settings.remote_debugging_port = env::properties().get(L"configuration.html.remote-debugging-port", 0);
-
+        if(settings.remote_debugging_port>0) settings.log_severity = LOGSEVERITY_VERBOSE;
+        
         //settings.pack_loading_disabled = false;
         //settings.ignore_certificate_errors = true;
 
