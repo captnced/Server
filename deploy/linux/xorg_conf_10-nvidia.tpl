@@ -22,6 +22,7 @@ Section "InputDevice"
     # generated from default
     Identifier     "Keyboard0"
     Driver         "kbd"
+    Option         "XkbLayout" "en"
 EndSection
 
 

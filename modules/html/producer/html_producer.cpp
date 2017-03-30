@@ -231,6 +231,7 @@ private:
 	{
 		CASPAR_ASSERT(CefCurrentlyOn(TID_UI));
 		browser_ = browser;
+        CASPAR_LOG(trace) << "[cef_task] OnAfterCreated";
 	}
 
 	void OnBeforeClose(CefRefPtr<CefBrowser> browser) override
@@ -267,9 +268,49 @@ private:
 			int httpStatusCode) override
 	{
 		loaded_ = true;
+        CASPAR_LOG(trace) << "[cef_task] OnLoadEnd";
 		execute_queued_javascript();
 	}
 
+    void OnBrowserCreated(CefRefPtr<MyClientApp> app,
+                          CefRefPtr<CefBrowser> browser)
+    {
+        CASPAR_LOG(trace) << "[cef_task] OnBrowserCreated";
+    }
+    
+    void OnUncaughtException(CefRefPtr<MyClientApp> app,
+                                     CefRefPtr<CefBrowser> browser,
+                                     CefRefPtr<CefFrame> frame,
+                                     CefRefPtr<CefV8Context> context,
+                                     CefRefPtr<CefV8Exception> exception,
+                                     CefRefPtr<CefV8StackTrace> stackTrace)
+    {
+        CASPAR_LOG(warning) << "[cef_task] caught v8 exception";
+    }
+    
+    void OnWebKitInitialized(CefRefPtr<MyClientApp> app)
+    {
+        CASPAR_LOG(trace) << "[cef_task] OnWebKitInitialized";
+    }
+
+    void OnRenderThreadCreated(CefRefPtr<MyClientApp> app,
+                               CefRefPtr<CefListValue> extra_info)
+    {
+        CASPAR_LOG(trace) << "[cef_task] OnRenderThreadCreated";
+    }
+    
+    void OnRenderProcessThreadCreated(
+                                      CefRefPtr<MyClientApp> app,
+                                      CefRefPtr<CefListValue> extra_info)
+    {
+        CASPAR_LOG(trace) << "[cef_task] OnRenderProcessThreadCreated";
+    }
+    
+    void OnContextInitialized(CefRefPtr<ClientApp> app)
+    {
+        CASPAR_LOG(trace) << "[cef_task] OnContextInitialized";
+    }
+    
 	bool OnProcessMessageReceived(
 			CefRefPtr<CefBrowser> browser,
 			CefProcessId source_process,
@@ -467,6 +508,7 @@ public:
             browser_settings.javascript_access_clipboard = cef_state_t::STATE_DISABLED;;
             
 			bool startedCef = CefBrowserHost::CreateBrowser(window_info, client_.get(), url, browser_settings, nullptr);
+            
             if(startedCef) {
                 CASPAR_LOG(trace) << "[cef_task] created browser";
             } else {
