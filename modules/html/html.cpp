@@ -285,10 +285,10 @@ void init(core::module_dependencies dependencies)
         //settings.graphics_implementation = ANGLE_IN_PROCESS;// DESKTOP_IN_PROCESS, ANGLE_IN_PROCESS (deprecated ?)
         
         settings.single_process = true;
-        settings.multi_threaded_message_loop = true;
+        settings.multi_threaded_message_loop = false;
         
         settings.windowless_rendering_enabled = true;
-        //settings.transparent_painting_enabled = true; not exist
+        //settings.transparent_painting_enabled = true; (deprecated ?)
         
         //settings.background_color = CefColorSetARGB(255, 255, 0, 0);
         
