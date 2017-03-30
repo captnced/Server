@@ -43,6 +43,8 @@
 
 #include <map>
 
+#include <gtk/gtk.h>
+#include <gtk/gtkgl.h>
 #include <X11/Xlib.h>
 
 #pragma warning(push)
@@ -281,6 +283,17 @@ bool intercept_command_line(int argc, char** argv)
 	CefMainArgs main_args(argc, argv);
 #endif
 
+    // The Chromium sandbox requires that there only be a single thread during
+    // initialization. Therefore initialize GTK after CEF.
+    gtk_init(&argc, &argv_copy);
+    // Perform gtkglext initialization required by the OSR example.
+    gtk_gl_init(&argc, &argv_copy);
+    // Install xlib error handlers so that the application won't be terminated
+    // on non-fatal errors. Must be done after initializing GTK.    
+    XSetErrorHandler(XErrorHandlerImpl);
+    XSetIOErrorHandler(XIOErrorHandlerImpl);
+    
+    
 	if (CefExecuteProcess(main_args, CefRefPtr<CefApp>(new renderer_application), nullptr) >= 0)
 		return true;
 
@@ -295,8 +308,7 @@ void init(core::module_dependencies dependencies)
 	g_cef_executor.reset(new executor(L"cef"));
 	g_cef_executor->invoke([&]
 	{
-        XSetErrorHandler(XErrorHandlerImpl);
-        XSetIOErrorHandler(XIOErrorHandlerImpl);
+
         
 		CefSettings settings;
 		settings.no_sandbox = true;
