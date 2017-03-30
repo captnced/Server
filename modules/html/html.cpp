@@ -278,10 +278,13 @@ void init(core::module_dependencies dependencies)
 	{
 		CefSettings settings;
 		settings.no_sandbox = true;
-        /*settings.multi_threaded_message_loop = true;
-        settings.pack_loading_disabled = false;
-        settings.ignore_certificate_errors = true;*/
+        settings.log_severity = LOGSEVERITY_VERBOSE;
+        //settings.multi_threaded_message_loop = true;
+        //settings.pack_loading_disabled = false;
+        settings.ignore_certificate_errors = true;
+        settings.graphics_implementation = // DESKTOP_IN_PROCESS, ANGLE_IN_PROCESS
         settings.windowless_rendering_enabled = true;
+        settings.background_color = CefColorSetARGB(255, 255, 0, 0);
         
 		settings.remote_debugging_port = env::properties().get(L"configuration.html.remote-debugging-port", 0);
 		

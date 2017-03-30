@@ -340,7 +340,7 @@ private:
 	{
         
         if (browser_) {
-            CASPAR_LOG(trace) << "[cef_task] invoke_requested_animation_frames" << format_desc_.fps;
+            //CASPAR_LOG(trace) << "[cef_task] invoke_requested_animation_frames " << format_desc_.fps << " fps";
 			browser_->SendProcessMessage(
 					CefProcessId::PID_RENDERER,
 					CefProcessMessage::Create(TICK_MESSAGE_NAME));
