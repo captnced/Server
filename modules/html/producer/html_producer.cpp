@@ -199,6 +199,7 @@ private:
 			int width,
 			int height)
 	{
+        CASPAR_LOG(trace) << "[cef_task] OnPaint";
 		graph_->set_value("browser-tick-time", paint_timer_.elapsed()
 				* format_desc_.fps
 				* format_desc_.field_count
@@ -237,14 +238,14 @@ private:
 	void OnBeforeClose(CefRefPtr<CefBrowser> browser) override
 	{
 		CASPAR_ASSERT(CefCurrentlyOn(TID_UI));
-
+        CASPAR_LOG(trace) << "[cef_task] OnBeforeClose";
 		browser_ = nullptr;
 	}
 
 	bool DoClose(CefRefPtr<CefBrowser> browser) override
 	{
 		CASPAR_ASSERT(CefCurrentlyOn(TID_UI));
-
+        CASPAR_LOG(trace) << "[cef_task] DoClose";
 		return false;
 	}
 
@@ -312,7 +313,7 @@ private:
 			CefRefPtr<CefProcessMessage> message) override
 	{
 		auto name = message->GetName().ToString();
-
+        CASPAR_LOG(trace) << "[cef_task] OnProcessMessageReceived";
 		if (name == REMOVE_MESSAGE_NAME)
 		{
 			remove();
@@ -337,6 +338,7 @@ private:
 
 	void invoke_requested_animation_frames()
 	{
+        CASPAR_LOG(trace) << "[cef_task] invoke_requested_animation_frames";
 		if (browser_)
 			browser_->SendProcessMessage(
 					CefProcessId::PID_RENDERER,
