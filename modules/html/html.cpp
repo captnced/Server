@@ -283,8 +283,14 @@ void init(core::module_dependencies dependencies)
         settings.pack_loading_disabled = false;
         settings.ignore_certificate_errors = true;
         //settings.graphics_implementation = ANGLE_IN_PROCESS;// DESKTOP_IN_PROCESS, ANGLE_IN_PROCESS (deprecated ?)
+        
+        settings.single_process = false;
+        settings.multi_threaded_message_loop = false;
+        
         settings.windowless_rendering_enabled = true;
-        settings.background_color = CefColorSetARGB(255, 255, 0, 0);
+        settings.transparent_painting_enabled = true;
+        
+        //settings.background_color = CefColorSetARGB(255, 255, 0, 0);
         
 		settings.remote_debugging_port = env::properties().get(L"configuration.html.remote-debugging-port", 0);
 		
@@ -292,6 +298,7 @@ void init(core::module_dependencies dependencies)
 	});
 	g_cef_executor->begin_invoke([&]
 	{
+        CASPAR_LOG(trace) << "[cef_task] CefRunMessageLoop ";
 		CefRunMessageLoop();
 	});
 	dependencies.cg_registry->register_cg_producer(
@@ -356,18 +363,18 @@ public:
 
 	void Execute() override
 	{
-		CASPAR_LOG_CALL(trace) << "[cef_task] executing task";
+		//CASPAR_LOG_CALL(trace) << "[cef_task] executing task";
 
 		try
 		{
 			function_();
 			promise_.set_value();
-			CASPAR_LOG_CALL(trace) << "[cef_task] task succeeded";
+			//CASPAR_LOG_CALL(trace) << "[cef_task] task succeeded";
 		}
 		catch (...)
 		{
 			promise_.set_exception(std::current_exception());
-			CASPAR_LOG(warning) << "[cef_task] task failed";
+			//CASPAR_LOG(warning) << "[cef_task] task failed";
 		}
 	}
 
