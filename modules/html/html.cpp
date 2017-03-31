@@ -210,7 +210,7 @@ public:
 					if (requestedFrames.hasOwnProperty(animationFrameId))
 						requestedFrames[animationFrameId](timestamp);
 			}
-		), CefString(), 1, ret, exception);
+		)", CefString(), 1, ret, exception);
         
         
         
