@@ -43,8 +43,6 @@
 
 #include <map>
 
-#include <gtk/gtk.h>
-#include <gtk/gtkgl.h>
 #include <X11/Xlib.h>
 
 #pragma warning(push)
@@ -212,7 +210,7 @@ public:
 					if (requestedFrames.hasOwnProperty(animationFrameId))
 						requestedFrames[animationFrameId](timestamp);
 			}
-		)","", 0, ret, exception);
+		), CefString(), 1, ret, exception);
         
         
         
@@ -260,7 +258,7 @@ public:
 				CefRefPtr<CefV8Value> ret;
 				CefRefPtr<CefV8Exception> exception;
 				//context->Eval("tickAnimations()", ret, exception);
-                context->Eval("tickAnimations()","",0, ret, exception);
+                context->Eval("tickAnimations()", CefString(), 1, ret, exception);
                 
 			}
 
@@ -283,15 +281,17 @@ bool intercept_command_line(int argc, char** argv)
 	CefMainArgs main_args(argc, argv);
 #endif
 
-    // The Chromium sandbox requires that there only be a single thread during
+    /*// The Chromium sandbox requires that there only be a single thread during
     // initialization. Therefore initialize GTK after CEF.
     gtk_init(&argc, &argv_copy);
     // Perform gtkglext initialization required by the OSR example.
-    gtk_gl_init(&argc, &argv_copy);
-    // Install xlib error handlers so that the application won't be terminated
-    // on non-fatal errors. Must be done after initializing GTK.    
+    gtk_gl_init(&argc, &argv_copy);*/
+    
+    /*// Install xlib error handlers so that the application won't be terminated
+    // on non-fatal errors. Must be done after initializing GTK.
     XSetErrorHandler(XErrorHandlerImpl);
     XSetIOErrorHandler(XIOErrorHandlerImpl);
+    */
     
     
 	if (CefExecuteProcess(main_args, CefRefPtr<CefApp>(new renderer_application), nullptr) >= 0)
