@@ -199,7 +199,7 @@ private:
 			int width,
 			int height)
 	{
-        CASPAR_LOG(trace) << "[cef_task] OnPaint";
+        //CASPAR_LOG(trace) << "[cef_task] OnPaint";
 		graph_->set_value("browser-tick-time", paint_timer_.elapsed()
 				* format_desc_.fps
 				* format_desc_.field_count
@@ -232,13 +232,13 @@ private:
 	{
 		CASPAR_ASSERT(CefCurrentlyOn(TID_UI));
 		browser_ = browser;
-        CASPAR_LOG(trace) << "[cef_task] OnAfterCreated";
+        //CASPAR_LOG(trace) << "[cef_task] OnAfterCreated";
 	}
 
 	void OnBeforeClose(CefRefPtr<CefBrowser> browser) override
 	{
 		CASPAR_ASSERT(CefCurrentlyOn(TID_UI));
-        CASPAR_LOG(trace) << "[cef_task] OnBeforeClose";
+        //CASPAR_LOG(trace) << "[cef_task] OnBeforeClose";
 		browser_ = nullptr;
 	}
 
@@ -313,7 +313,7 @@ private:
 			CefRefPtr<CefProcessMessage> message) override
 	{
 		auto name = message->GetName().ToString();
-        CASPAR_LOG(trace) << "[cef_task] OnProcessMessageReceived";
+        //CASPAR_LOG(trace) << "[cef_task] OnProcessMessageReceived";
 		if (name == REMOVE_MESSAGE_NAME)
 		{
 			remove();
@@ -514,7 +514,7 @@ public:
 			bool startedCef = CefBrowserHost::CreateBrowser(window_info, client_.get(), url, browser_settings, nullptr);
             
             if(startedCef) {
-                CASPAR_LOG(trace) << "[cef_task] created browser";
+                //CASPAR_LOG(trace) << "[cef_task] created browser";
             } else {
                 CASPAR_LOG(error) << "[cef_task] could not create browser";
             }
@@ -524,7 +524,7 @@ public:
 	~html_producer()
 	{
         if (client_) {
-            CASPAR_LOG(trace) << "[cef_task] destroy html_producer";
+            //CASPAR_LOG(trace) << "[cef_task] destroy html_producer";
 			client_->close();
         }
 	}
@@ -605,7 +605,7 @@ public:
 	std::future<std::wstring> call(const std::vector<std::wstring>& params) override
 	{
         if (!client_) {
-            CASPAR_LOG(trace) << "[cef_task] call params";
+            //CASPAR_LOG(trace) << "[cef_task] call params";
 			return make_ready_future(std::wstring(L""));
         }
 		auto javascript = params.at(0);
@@ -670,12 +670,12 @@ spl::shared_ptr<core::frame_producer> create_producer(
 		? L"file://" + *found_filename
 		: params.at(1);
 
-    CASPAR_LOG(trace) << "[cef_task] create html_producer :: " << url;
+    //CASPAR_LOG(trace) << "[cef_task] create html_producer :: " << url;
     
 	if (!html_prefix && (!boost::algorithm::contains(url, ".") || boost::algorithm::ends_with(url, "_A") || boost::algorithm::ends_with(url, "_ALPHA")))
 		return core::frame_producer::empty();
 
-    CASPAR_LOG(trace) << "[cef_task] create create_destroy_proxy :: " << url;
+    //CASPAR_LOG(trace) << "[cef_task] create create_destroy_proxy :: " << url;
 
 	return core::create_destroy_proxy(spl::make_shared<html_producer>(
 			dependencies.frame_factory,
