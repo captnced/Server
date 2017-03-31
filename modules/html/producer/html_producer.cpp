@@ -503,6 +503,11 @@ public:
             //browser_settings.transparent_painting_enabled = true;
 			browser_settings.web_security = cef_state_t::STATE_DISABLED;
             browser_settings.plugins = cef_state_t::STATE_DISABLED;
+            
+            browser_settings.webgl = cef_state_t::STATE_ENABLED;
+            browser_settings.javascript = cef_state_t::STATE_ENABLED;
+            browser_settings.file_access_from_file_urls = cef_state_t::STATE_ENABLED;
+            browser_settings.universal_access_from_file_urls = cef_state_t::STATE_ENABLED;
                         
             browser_settings.javascript_access_clipboard = cef_state_t::STATE_DISABLED;;
             
