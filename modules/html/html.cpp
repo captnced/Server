@@ -130,7 +130,7 @@ public:
 
 		CefRefPtr<CefV8Value> ret;
 		CefRefPtr<CefV8Exception> exception;
-		bool injected = context->Eval(R"(
+		/*bool injected = context->Eval(R"(
 			var requestedAnimationFrames	= {};
 			var currentAnimationFrameId		= 0;
 
@@ -152,7 +152,26 @@ public:
 					if (requestedFrames.hasOwnProperty(animationFrameId))
 						requestedFrames[animationFrameId](timestamp);
 			}
-		)", ret, exception);
+		)", ret, exception);*/
+        bool injected = context->Eval(R"(
+            var requestedAnimationFrames    = {};
+            var currentAnimationFrameId        = 0;
+            window.requestAnimationFrame = function(callback) {
+                requestedAnimationFrames[++currentAnimationFrameId] = callback;
+                return currentAnimationFrameId;
+            }
+            window.cancelAnimationFrame = function(animationFrameId) {
+                delete requestedAnimationFrames[animationFrameId];
+            }
+            function tickAnimations() {
+                var requestedFrames = requestedAnimationFrames;
+                var timestamp = performance.now();
+                requestedAnimationFrames = {};
+                for (var animationFrameId in requestedFrames)
+                    if (requestedFrames.hasOwnProperty(animationFrameId))
+                        requestedFrames[animationFrameId](timestamp);
+            }
+        )", CefString(), 1, ret, exception);
 
 		if (!injected)
 			caspar_log(browser, boost::log::trivial::error, "Could not inject javascript animation code.");
@@ -197,7 +216,8 @@ public:
 			{
 				CefRefPtr<CefV8Value> ret;
 				CefRefPtr<CefV8Exception> exception;
-				context->Eval("tickAnimations()", ret, exception);
+				/*context->Eval("tickAnimations()", ret, exception);*/
+                context->Eval("tickAnimations()", CefString(), 1, ret, exception);
 			}
 
 			return true;
