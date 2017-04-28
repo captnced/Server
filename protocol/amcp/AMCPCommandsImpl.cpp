@@ -2131,22 +2131,21 @@ std::wstring channel_grid_command(command_context& ctx)
 	core::diagnostics::scoped_call_context save;
 	core::diagnostics::call_context::for_thread().video_channel = ctx.channels.size();
 
-    // SCREENLESS CHANNEL GRID
-	/*std::vector<std::wstring> params;
+	std::vector<std::wstring> params;
 	params.push_back(L"SCREEN");
 	params.push_back(L"0");
 	params.push_back(L"NAME");
 	params.push_back(L"Channel Grid Window");
 	auto screen = ctx.consumer_registry->create_consumer(params, &self.channel->stage(), get_channels(ctx));
 
-	self.channel->output().add(screen);*/
+	self.channel->output().add(screen);
 
 	for (auto& channel : ctx.channels)
 	{
 		if (channel.channel != self.channel)
 		{
 			core::diagnostics::call_context::for_thread().layer = index;
-			auto producer = ctx.producer_registry->create_producer(get_producer_dependencies(self.channel, ctx), L"route://" + boost::lexical_cast<std::wstring>(channel.channel->index()));
+			auto producer = ctx.producer_registry->create_producer(get_producer_dependencies(self.channel, ctx), L"route://" + boost::lexical_cast<std::wstring>(channel.channel->index()) + L" NO_AUTO_DEINTERLACE");
 			self.channel->stage().load(index, producer, false);
 			self.channel->stage().play(index);
 			index++;

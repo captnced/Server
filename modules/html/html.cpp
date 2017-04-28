@@ -43,8 +43,6 @@
 
 #include <map>
 
-#include <X11/Xlib.h>
-
 #pragma warning(push)
 #pragma warning(disable: 4458)
 #include <cef_app.h>
@@ -54,25 +52,8 @@
 #pragma comment(lib, "libcef.lib")
 #pragma comment(lib, "libcef_dll_wrapper.lib")
 
-
-
-
 namespace caspar { namespace html {
 
-int XErrorHandlerImpl(Display *display, XErrorEvent *event) {
-    CASPAR_LOG_CALL(trace) << "X error received: "
-    << "type " << event->type << ", "
-    << "serial " << event->serial << ", "
-    << "error_code " << static_cast<int>(event->error_code) << ", "
-    << "request_code " << static_cast<int>(event->request_code) << ", "
-    << "minor_code " << static_cast<int>(event->minor_code);
-    return 0;
-}
-
-int XIOErrorHandlerImpl(Display *display) {
-    return 0;
-}
-    
 std::unique_ptr<executor> g_cef_executor;
 
 void caspar_log(
@@ -149,8 +130,7 @@ public:
 
 		CefRefPtr<CefV8Value> ret;
 		CefRefPtr<CefV8Exception> exception;
-        
-        bool injected = context->Eval(R"(
+		bool injected = context->Eval(R"(
 			var requestedAnimationFrames	= {};
 			var currentAnimationFrameId		= 0;
 
@@ -172,12 +152,10 @@ public:
 					if (requestedFrames.hasOwnProperty(animationFrameId))
 						requestedFrames[animationFrameId](timestamp);
 			}
-		)", CefString(), 1, ret, exception);
-        
-        if (!injected) {
-            CASPAR_LOG_CALL(trace) << "[cef] Could not inject javascript animation code.";
+		)", ret, exception);
+
+		if (!injected)
 			caspar_log(browser, boost::log::trivial::error, "Could not inject javascript animation code.");
-        }
 	}
 
 	void OnContextReleased(
@@ -219,16 +197,13 @@ public:
 			{
 				CefRefPtr<CefV8Value> ret;
 				CefRefPtr<CefV8Exception> exception;
-				//context->Eval("tickAnimations()", ret, exception);
-                context->Eval("tickAnimations()", CefString(), 1, ret, exception);
-                
+				context->Eval("tickAnimations()", ret, exception);
 			}
-            CASPAR_LOG_CALL(trace) << "[cef] triggered tickAnimations()";
+
 			return true;
 		}
 		else
 		{
-            CASPAR_LOG_CALL(trace) << "[cef] no tick message";
 			return false;
 		}
 	}
@@ -244,19 +219,6 @@ bool intercept_command_line(int argc, char** argv)
 	CefMainArgs main_args(argc, argv);
 #endif
 
-    /*// The Chromium sandbox requires that there only be a single thread during
-    // initialization. Therefore initialize GTK after CEF.
-    gtk_init(&argc, &argv_copy);
-    // Perform gtkglext initialization required by the OSR example.
-    gtk_gl_init(&argc, &argv_copy);*/
-    
-    /*// Install xlib error handlers so that the application won't be terminated
-    // on non-fatal errors. Must be done after initializing GTK.
-    XSetErrorHandler(XErrorHandlerImpl);
-    XSetIOErrorHandler(XIOErrorHandlerImpl);
-    */
-    
-    
 	if (CefExecuteProcess(main_args, CefRefPtr<CefApp>(new renderer_application), nullptr) >= 0)
 		return true;
 
@@ -271,34 +233,16 @@ void init(core::module_dependencies dependencies)
 	g_cef_executor.reset(new executor(L"cef"));
 	g_cef_executor->invoke([&]
 	{
-
-        
 		CefSettings settings;
 		settings.no_sandbox = true;
-        settings.windowless_rendering_enabled = true;
-        settings.remote_debugging_port = env::properties().get(L"configuration.html.remote-debugging-port", 0);
+		settings.remote_debugging_port = env::properties().get(L"configuration.html.remote-debugging-port", 0);
+		settings.windowless_rendering_enabled = true;
         if(settings.remote_debugging_port>0) settings.log_severity = LOGSEVERITY_VERBOSE;
+		CefInitialize(main_args, settings, nullptr, nullptr);
         
-        //settings.pack_loading_disabled = false;
-        //settings.ignore_certificate_errors = true;
-
-        //settings.graphics_implementation = ANGLE_IN_PROCESS;// DESKTOP_IN_PROCESS, ANGLE_IN_PROCESS (deprecated ?)
-        
-        //settings.single_process = false;
-        //settings.multi_threaded_message_loop = false;
-        
-        
-        //settings.transparent_painting_enabled = true; (deprecated ?)
-        
-        //settings.background_color = CefColorSetARGB(255, 255, 0, 0);
-        
-		
-		//CASPAR_LOG(trace) << "[cef_task] CefInitialize ";
-        CefInitialize(main_args, settings, nullptr, nullptr);
 	});
 	g_cef_executor->begin_invoke([&]
 	{
-        //CASPAR_LOG(trace) << "[cef_task] CefRunMessageLoop ";
 		CefRunMessageLoop();
 	});
 	dependencies.cg_registry->register_cg_producer(
@@ -363,18 +307,18 @@ public:
 
 	void Execute() override
 	{
-		//CASPAR_LOG_CALL(trace) << "[cef_task] executing task";
+		CASPAR_LOG_CALL(trace) << "[cef_task] executing task";
 
 		try
 		{
 			function_();
 			promise_.set_value();
-			//CASPAR_LOG_CALL(trace) << "[cef_task] task succeeded";
+			CASPAR_LOG_CALL(trace) << "[cef_task] task succeeded";
 		}
 		catch (...)
 		{
 			promise_.set_exception(std::current_exception());
-			//CASPAR_LOG(warning) << "[cef_task] task failed";
+			CASPAR_LOG(warning) << "[cef_task] task failed";
 		}
 	}
 

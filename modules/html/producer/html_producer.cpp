@@ -44,7 +44,6 @@
 #include <common/prec_timer.h>
 #include <common/linq.h>
 #include <common/os/filesystem.h>
-#include <common/memcpy.h>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
@@ -62,8 +61,6 @@
 #include <cef_client.h>
 #include <cef_render_handler.h>
 #pragma warning(pop)
-
-#include <asmlib.h>
 
 #include <queue>
 
@@ -199,7 +196,6 @@ private:
 			int width,
 			int height)
 	{
-        //CASPAR_LOG(trace) << "[cef_task] OnPaint";
 		graph_->set_value("browser-tick-time", paint_timer_.elapsed()
 				* format_desc_.fps
 				* format_desc_.field_count
@@ -212,7 +208,7 @@ private:
 			pixel_desc.planes.push_back(
 				core::pixel_format_desc::plane(width, height, 4));
 		auto frame = frame_factory_->create_frame(this, pixel_desc, core::audio_channel_layout::invalid());
-		fast_memcpy(frame.image_data().begin(), buffer, width * height * 4);
+		std::memcpy(frame.image_data().begin(), buffer, width * height * 4);
 
 		lock(frames_mutex_, [&]
 		{
@@ -231,21 +227,21 @@ private:
 	void OnAfterCreated(CefRefPtr<CefBrowser> browser) override
 	{
 		CASPAR_ASSERT(CefCurrentlyOn(TID_UI));
+
 		browser_ = browser;
-        //CASPAR_LOG(trace) << "[cef_task] OnAfterCreated";
 	}
 
 	void OnBeforeClose(CefRefPtr<CefBrowser> browser) override
 	{
 		CASPAR_ASSERT(CefCurrentlyOn(TID_UI));
-        //CASPAR_LOG(trace) << "[cef_task] OnBeforeClose";
+
 		browser_ = nullptr;
 	}
 
 	bool DoClose(CefRefPtr<CefBrowser> browser) override
 	{
 		CASPAR_ASSERT(CefCurrentlyOn(TID_UI));
-        CASPAR_LOG(trace) << "[cef_task] DoClose";
+
 		return false;
 	}
 
@@ -269,51 +265,16 @@ private:
 			int httpStatusCode) override
 	{
 		loaded_ = true;
-        CASPAR_LOG(trace) << "[cef_task] OnLoadEnd";
 		execute_queued_javascript();
 	}
 
-    void OnBrowserCreated(CefRefPtr<CefBrowser> browser)
-    {
-        CASPAR_LOG(trace) << "[cef_task] OnBrowserCreated";
-    }
-    
-    void OnUncaughtException(CefRefPtr<CefBrowser> browser,
-                             CefRefPtr<CefFrame> frame,
-                             CefRefPtr<CefV8Context> context,
-                             CefRefPtr<CefV8Exception> exception,
-                             CefRefPtr<CefV8StackTrace> stackTrace)
-    {
-        CASPAR_LOG(warning) << "[cef_task] caught v8 exception";
-    }
-    
-    void OnWebKitInitialized()
-    {
-        CASPAR_LOG(trace) << "[cef_task] OnWebKitInitialized";
-    }
-
-    void OnRenderThreadCreated(CefRefPtr<CefListValue> extra_info)
-    {
-        CASPAR_LOG(trace) << "[cef_task] OnRenderThreadCreated";
-    }
-    
-    void OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
-    {
-        CASPAR_LOG(trace) << "[cef_task] OnRenderProcessThreadCreated";
-    }
-    
-    void OnContextInitialized()
-    {
-        CASPAR_LOG(trace) << "[cef_task] OnContextInitialized";
-    }
-    
 	bool OnProcessMessageReceived(
 			CefRefPtr<CefBrowser> browser,
 			CefProcessId source_process,
 			CefRefPtr<CefProcessMessage> message) override
 	{
 		auto name = message->GetName().ToString();
-        //CASPAR_LOG(trace) << "[cef_task] OnProcessMessageReceived";
+
 		if (name == REMOVE_MESSAGE_NAME)
 		{
 			remove();
@@ -338,13 +299,11 @@ private:
 
 	void invoke_requested_animation_frames()
 	{
-        
-        if (browser_) {
-            //CASPAR_LOG(trace) << "[cef_task] invoke_requested_animation_frames " << format_desc_.fps << " fps";
+		if (browser_)
 			browser_->SendProcessMessage(
 					CefProcessId::PID_RENDERER,
 					CefProcessMessage::Create(TICK_MESSAGE_NAME));
-        }
+
 		graph_->set_value("tick-time", tick_timer_.elapsed()
 				* format_desc_.fps
 				* format_desc_.field_count
@@ -494,39 +453,29 @@ public:
 
 			CefWindowInfo window_info;
 
-			/*window_info.SetTransparentPainting(true);
-			window_info.SetAsOffScreen(nullptr);*/
+            /*window_info.SetTransparentPainting(true);
+             window_info.SetAsOffScreen(nullptr);*/
             window_info.SetAsWindowless(kNullWindowHandle, true);
-            
+
             CefBrowserSettings browser_settings;
             //browser_settings.windowless_rendering_enabled = true;
             //browser_settings.transparent_painting_enabled = true;
-			browser_settings.web_security = cef_state_t::STATE_DISABLED;
+            browser_settings.web_security = cef_state_t::STATE_DISABLED;
             browser_settings.plugins = cef_state_t::STATE_DISABLED;
             
             browser_settings.webgl = cef_state_t::STATE_ENABLED;
             browser_settings.javascript = cef_state_t::STATE_ENABLED;
             browser_settings.file_access_from_file_urls = cef_state_t::STATE_ENABLED;
             browser_settings.universal_access_from_file_urls = cef_state_t::STATE_ENABLED;
-                        
-            browser_settings.javascript_access_clipboard = cef_state_t::STATE_DISABLED;;
             
-			bool startedCef = CefBrowserHost::CreateBrowser(window_info, client_.get(), url, browser_settings, nullptr);
-            
-            if(startedCef) {
-                //CASPAR_LOG(trace) << "[cef_task] created browser";
-            } else {
-                CASPAR_LOG(error) << "[cef_task] could not create browser";
-            }
+            browser_settings.javascript_access_clipboard = cef_state_t::STATE_DISABLED;			CefBrowserHost::CreateBrowser(window_info, client_.get(), url, browser_settings, nullptr);
 		});
 	}
 
 	~html_producer()
 	{
-        if (client_) {
-            //CASPAR_LOG(trace) << "[cef_task] destroy html_producer";
+		if (client_)
 			client_->close();
-        }
 	}
 
 	// frame_producer
@@ -594,7 +543,7 @@ public:
 			{
 				client_ = nullptr;
 				return core::draw_frame::empty();
-            }
+			}
 
 			return client_->receive();
 		}
@@ -604,12 +553,11 @@ public:
 
 	std::future<std::wstring> call(const std::vector<std::wstring>& params) override
 	{
-        if (!client_) {
-            //CASPAR_LOG(trace) << "[cef_task] call params";
+		if (!client_)
 			return make_ready_future(std::wstring(L""));
-        }
+
 		auto javascript = params.at(0);
-        CASPAR_LOG(trace) << "[cef_task] call javascript " << javascript;
+
 		client_->execute_javascript(javascript);
 
 		return make_ready_future(std::wstring(L""));
@@ -625,7 +573,6 @@ public:
 		boost::property_tree::wptree info;
 		info.add(L"type", L"html-producer");
         info.add(L"url",  L"" + url_ + L"");
-        //info.add(L"name", L"" + url_ + L"");// for the moment...
 		return info;
 	}
 
@@ -670,12 +617,8 @@ spl::shared_ptr<core::frame_producer> create_producer(
 		? L"file://" + *found_filename
 		: params.at(1);
 
-    //CASPAR_LOG(trace) << "[cef_task] create html_producer :: " << url;
-    
 	if (!html_prefix && (!boost::algorithm::contains(url, ".") || boost::algorithm::ends_with(url, "_A") || boost::algorithm::ends_with(url, "_ALPHA")))
 		return core::frame_producer::empty();
-
-    //CASPAR_LOG(trace) << "[cef_task] create create_destroy_proxy :: " << url;
 
 	return core::create_destroy_proxy(spl::make_shared<html_producer>(
 			dependencies.frame_factory,

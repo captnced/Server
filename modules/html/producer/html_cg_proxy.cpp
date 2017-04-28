@@ -60,25 +60,21 @@ void html_cg_proxy::add(
 
 void html_cg_proxy::remove(int layer)
 {
-    CASPAR_LOG(trace) << "[cef_task] REMOVE";
 	impl_->producer->call({ L"remove()" });
 }
 
 void html_cg_proxy::play(int layer)
 {
-    CASPAR_LOG(trace) << "[cef_task] PLAY";
 	impl_->producer->call({ L"play()" });
 }
 
 void html_cg_proxy::stop(int layer, unsigned int mix_out_duration)
 {
-    CASPAR_LOG(trace) << "[cef_task] STOP";
 	impl_->producer->call({ L"stop()" });
 }
 
 void html_cg_proxy::next(int layer)
 {
-    CASPAR_LOG(trace) << "[cef_task] NEXT";
 	impl_->producer->call({ L"next()" });
 }
 
@@ -93,7 +89,6 @@ std::wstring html_cg_proxy::invoke(int layer, const std::wstring& label)
 
 	// Append empty () if no parameter list has been given
 	auto javascript = boost::ends_with(function_call, ")") ? function_call : function_call + L"()";
-    CASPAR_LOG(warning) << "[cef_task] EXEC JAVASCRIPT " << javascript;
 	return impl_->producer->call({ javascript }).get();
 }
 
