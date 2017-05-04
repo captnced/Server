@@ -1,0 +1,11 @@
+--- /mnt/_build/Server/modules/html/producer/html_producer.cpp	2017-05-04 09:18:43.077258639 +0000
++++ new.cpp	2017-05-04 09:19:13.860669033 +0000
+@@ -563,6 +563,7 @@
+ 	{
+ 		boost::property_tree::wptree info;
+ 		info.add(L"type", L"html-producer");
++                info.add(L"url",  L"" + url_ + L"");
+ 		return info;
+ 	}
+
+
