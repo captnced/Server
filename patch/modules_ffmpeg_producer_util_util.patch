@@ -1,0 +1,16 @@
+--- /mnt/_build/Server/modules/ffmpeg/producer/util/util.cpp	2017-05-04 08:43:17.019881874 +0000
++++ new_util.cpp	2017-05-04 08:44:33.909440530 +0000
+@@ -428,7 +428,11 @@
+ 			if (diff1 < diff2)
+ 				closest_fps = boost::rational<int>(format.time_scale, format.duration);
+ 		}
+-
++                // dirty hack when FPS was not detected, to avoid returning 0/0 value -> forcing fps = 25/1
++                if(closest_fps.numerator()==0||closest_fps.denominator()==0) {
++                    std::wcout << L"warning ! fps 0/0 " << closest_fps << L" --> forcing FPS = 25.0" << std::endl;
++                    return boost::rational<int>(25000000, 1000000);
++                }
+ 		return closest_fps;
+ 	}
+ 
+

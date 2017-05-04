@@ -468,7 +468,8 @@ public:
             browser_settings.file_access_from_file_urls = cef_state_t::STATE_ENABLED;
             browser_settings.universal_access_from_file_urls = cef_state_t::STATE_ENABLED;
             
-            browser_settings.javascript_access_clipboard = cef_state_t::STATE_DISABLED;			CefBrowserHost::CreateBrowser(window_info, client_.get(), url, browser_settings, nullptr);
+            browser_settings.javascript_access_clipboard = cef_state_t::STATE_DISABLED;
+            CefBrowserHost::CreateBrowser(window_info, client_.get(), url, browser_settings, nullptr);
 		});
 	}
 

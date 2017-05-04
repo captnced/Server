@@ -56,6 +56,7 @@ Section "Screen"
     Device         "Device0"
     Monitor        "Monitor0"
     DefaultDepth    24
+    Option         "AllowGLXWithComposite" "True"
     #Option         "UseDisplayDevice" "None"
     SubSection     "Display"
         Virtual     1920 1080
