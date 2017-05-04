@@ -93,7 +93,6 @@ install:
 	cp -Rf $(SERVER_FOLDER)/* $(INSTALL_FOLDER)/server/ || $(call failed_msg,"Could not install xccg server in $(INSTALL_FOLDER)/server/")
 	@$(call ok_msg,"To start xccg manually :: /etc/init.d/xccg start")
 	@$(call ok_msg,"To install in boot sequence :: update-rc.d xccg defaults")
-	@cd ../dependencies64 && rm -f ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && wget https://launchpad.net/ubuntu/+archive/primary/+files/libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && sudo dpkg -i ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb
 
 pull:
 	@cd ../ && git pull
@@ -108,4 +107,5 @@ init:
 	@sudo apt-get install -y libxrandr-dev libjpeg-dev libsndfile1-dev libudev-dev libglu1-mesa-dev
 	@sudo apt-get install -y libjpeg-dev libpng-dev libxrandr-dev libxcb-xfixes0-dev libv4l-dev libgtk2.0-0 libxtst6 libnss3 libgconf-2-4 libasound2 libcgmanager0 libraw1394-dev libavc1394-dev libiec61883-dev libxss1
 	@sudo apt-get install -y gnome-themes-standard
+	@cd ../dependencies64 && rm -f ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && wget https://launchpad.net/ubuntu/+archive/primary/+files/libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && sudo dpkg -i ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb
 
