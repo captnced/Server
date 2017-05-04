@@ -78,7 +78,6 @@ cef3:
 deps: cef3
 	#http://opensource.spotify.com/cefbuilds/cef_binary_3.2987.1592.gfbafd4e_linux64.tar.bz2
 	#@cd ../dependencies64 && tar xvJf large_files_linux.tar.xz && $(call ok_msg,"deployed ..//dependencies64/cef/bin/linux/libcef.so") || $(call failed_msg,"could not unpack large_files_linux.tar.xz")
-	@cd ../dependencies64 && rm -f ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && wget https://launchpad.net/ubuntu/+archive/primary/+files/libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && sudo dpkg -i ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb
 
 clean:
 	@rm -Rf ../build && $(call ok_msg,"cleaned ../build folder")
@@ -94,6 +93,7 @@ install:
 	cp -Rf $(SERVER_FOLDER)/* $(INSTALL_FOLDER)/server/ || $(call failed_msg,"Could not install xccg server in $(INSTALL_FOLDER)/server/")
 	@$(call ok_msg,"To start xccg manually :: /etc/init.d/xccg start")
 	@$(call ok_msg,"To install in boot sequence :: update-rc.d xccg defaults")
+	@cd ../dependencies64 && rm -f ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && wget https://launchpad.net/ubuntu/+archive/primary/+files/libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb && sudo dpkg -i ./libgcrypt11_1.5.3-2ubuntu4.2_amd64.deb
 
 pull:
 	@cd ../ && git pull
