@@ -1,0 +1,77 @@
+--- html_producer.cpp	2017-09-14 16:42:39.000000000 +0200
++++ new_html_producer.cpp	2017-09-14 16:55:15.000000000 +0200
+@@ -78,6 +78,7 @@
+ 	, public CefLoadHandler
+ {
+ 	std::wstring							url_;
++    std::wstring                            html_name_;
+ 	spl::shared_ptr<diagnostics::graph>		graph_;
+ 	boost::timer							tick_timer_;
+ 	boost::timer							frame_timer_;
+@@ -104,8 +105,10 @@
+ 	html_client(
+ 			spl::shared_ptr<core::frame_factory> frame_factory,
+ 			const core::video_format_desc& format_desc,
+-			const std::wstring& url)
++			const std::wstring& url,
++            const std::wstring& html_name)
+ 		: url_(url)
++        , html_name_(html_name)
+ 		, frame_factory_(std::move(frame_factory))
+ 		, format_desc_(format_desc)
+ 		, last_frame_(core::draw_frame::empty())
+@@ -433,6 +436,7 @@
+ {
+ 	core::monitor::subject	monitor_subject_;
+ 	const std::wstring		url_;
++    const std::wstring      html_name_;
+ 	core::constraints		constraints_;
+ 
+ 	CefRefPtr<html_client>	client_;
+@@ -441,15 +445,17 @@
+ 	html_producer(
+ 		const spl::shared_ptr<core::frame_factory>& frame_factory,
+ 		const core::video_format_desc& format_desc,
+-		const std::wstring& url)
++		const std::wstring& url
++        const std::wstring& html_name)
+ 		: url_(url)
++        , html_name_(html_name)
+ 	{
+ 		constraints_.width.set(format_desc.square_width);
+ 		constraints_.height.set(format_desc.square_height);
+ 
+ 		html::invoke([&]
+ 		{
+-			client_ = new html_client(frame_factory, format_desc, url_);
++			client_ = new html_client(frame_factory, format_desc, url_, html_name);
+ 
+ 			CefWindowInfo window_info;
+ 
+@@ -563,6 +569,8 @@
+ 	{
+ 		boost::property_tree::wptree info;
+ 		info.add(L"type", L"html-producer");
++        info.add(L"url",  L"" + url_ + L"");
++        info.add(L"name", L"" + html_name_ + L"");
+ 		return info;
+ 	}
+ 
+@@ -599,6 +607,7 @@
+ 	const auto filename			= env::template_folder() + params.at(0) + L".html";
+ 	const auto found_filename	= find_case_insensitive(filename);
+ 	const auto html_prefix		= boost::iequals(params.at(0), L"[HTML]");
++    const auto html_name        = html_prefix ? params.at(1) : params.at(0);
+ 
+ 	if (!found_filename && !html_prefix)
+ 		return core::frame_producer::empty();
+@@ -613,7 +622,8 @@
+ 	return core::create_destroy_proxy(spl::make_shared<html_producer>(
+ 			dependencies.frame_factory,
+ 			dependencies.format_desc,
+-			url));
++			url,
++            html_name));
+ }
+ 
+ }}
