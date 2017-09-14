@@ -1,5 +1,5 @@
 --- html_producer.cpp	2017-09-14 16:42:39.000000000 +0200
-+++ new_html_producer.cpp	2017-09-14 16:55:15.000000000 +0200
++++ new_html_producer.cpp	2017-09-14 17:09:51.000000000 +0200
 @@ -78,6 +78,7 @@
  	, public CefLoadHandler
  {
@@ -33,7 +33,7 @@
  		const spl::shared_ptr<core::frame_factory>& frame_factory,
  		const core::video_format_desc& format_desc,
 -		const std::wstring& url)
-+		const std::wstring& url
++		const std::wstring& url,
 +        const std::wstring& html_name)
  		: url_(url)
 +        , html_name_(html_name)
